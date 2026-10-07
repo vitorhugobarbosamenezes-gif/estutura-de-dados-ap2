@@ -17,30 +17,41 @@ export class Editor {
   private historico = new Pilha<string>();
   private refazerPilha = new Pilha<string>();
 
+  // Big-O: O(1)
   digitar(palavra: string): void {
-    // TODO
+    this.historico.push(palavra);
   }
 
+  // Big-O: O(1)
   desfazer(): void {
-    // TODO
+    if (!this.historico.estaVazia()) {
+      this.refazerPilha.push(this.historico.pop() as string);
+    }
   }
 
+  // Big-O: O(1)
   refazer(): void {
-    // TODO
+    if (!this.refazerPilha.estaVazia()) {
+      this.historico.push(this.refazerPilha.pop() as string);
+    }
   }
 
   // PRONTO — não precisa mexer
   textoAtual(): string {
     const aux = new Pilha<string>();
+
     while (!this.historico.estaVazia()) {
       aux.push(this.historico.pop() as string);
     }
+
     let texto = "";
+
     while (!aux.estaVazia()) {
       const p = aux.pop() as string;
       texto += (texto === "" ? "" : " ") + p;
       this.historico.push(p);
     }
+
     return texto;
   }
 }
